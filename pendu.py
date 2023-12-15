@@ -26,6 +26,7 @@ score_joueur = 0
 def saisir_nom_utilisateur():
     nom = ""
     saisie_active = True
+    titre = "Choisissez un nom d'utilisateur !"
 
     while saisie_active:
         for event in pygame.event.get():
@@ -44,6 +45,12 @@ def saisir_nom_utilisateur():
         fenetre.fill(couleur_fond)
         fenetre.blit(fond_ecran_menu, (0, 0))
 
+        # Affichage du titre
+        text_titre = font_grande.render(titre, True, couleur_text_pendu)
+        text_rect_titre = text_titre.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 250))
+        fenetre.blit(text_titre, text_rect_titre)
+
+        # Affichage du champ de saisie
         text = font_grande.render("Entrez votre nom:", True, couleur_texte)
         text_rect = text.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 50))
         fenetre.blit(text, text_rect)
@@ -102,7 +109,7 @@ def jouer_pendu():
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                if event.unicode.isalpha() and event.unicode.isupper():
+                if event.unicode.isalpha():
                     lettre = event.unicode.upper()
                     if lettre not in lettres_trouvees:
                         lettres_trouvees.add(lettre)
@@ -155,7 +162,7 @@ def jouer_pendu():
             print("Score:", score_joueur)
 
             with open("scores.txt", "a") as fichier_scores:
-                fichier_scores.write(f"{nom_joueur} : {score_joueur}\n")
+                fichier_scores.write(f"{nom_joueur.upper()} : {score_joueur}\n")
 
             break
         elif erreurs == erreurs_max:
