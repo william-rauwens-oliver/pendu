@@ -26,7 +26,7 @@ score_joueur = 0
 font_menu_principal = pygame.font.Font("polices/design.graffiti.comicsansmsgras.ttf", 36)
 font_petite = pygame.font.Font(None, 24)
 
-border_radius = 10  # Vous pouvez ajuster la valeur selon votre préférence
+border_radius = 10
 
 def saisir_nom_utilisateur():
     nom = ""
@@ -292,7 +292,7 @@ while True:
             scores = fichier_scores.readlines()
 
         y_position = 100
-        font_petite = pygame.font.Font("polices/Courier New.ttf", 10)
+        font_petite = pygame.font.Font("polices/Courier New.ttf", 20)
 
         for score in scores:
             text_score = font_petite.render(score.strip(), True, couleur_text_pendu)
