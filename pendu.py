@@ -15,10 +15,10 @@ font_grande = pygame.font.Font(None, 36)
 font_petite = pygame.font.Font(None, 24)
 
 # Chargement des mots depuis le fichier "mots.txt"
-with open("mots.txt", "r") as fichier:
+with open("fichiers texte/mots.txt", "r") as fichier:
     mots = fichier.read().splitlines()
 
-with open("scores.txt", "a"):
+with open("fichiers texte/scores.txt", "a"):
     pass
 
 score_joueur = 0
@@ -164,7 +164,7 @@ def jouer_pendu():
             score_joueur += 10 * (erreurs_max - erreurs)
             print("Score:", score_joueur)
 
-            with open("scores.txt", "a") as fichier_scores:
+            with open("fichiers texte/scores.txt", "a") as fichier_scores:
                 fichier_scores.write(f"{nom_joueur.upper()} : {score_joueur}\n")
 
             break
@@ -261,7 +261,7 @@ while True:
 
         if insert_mode and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                with open("mots.txt", "a") as fichier:
+                with open("fichiers texte/mots.txt", "a") as fichier:
                     fichier.write(nouveau_mot + "\n" if not nouveau_mot.endswith("\n") else nouveau_mot)
                 insert_mode = False
                 nouveau_mot = ""
