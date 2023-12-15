@@ -23,8 +23,10 @@ with open("fichiers texte/scores.txt", "a"):
 
 score_joueur = 0
 
-font_menu_principal = pygame.font.Font("police/design.graffiti.comicsansmsgras.ttf", 36)
+font_menu_principal = pygame.font.Font("polices/design.graffiti.comicsansmsgras.ttf", 36)
 font_petite = pygame.font.Font(None, 24)
+
+border_radius = 10  # Vous pouvez ajuster la valeur selon votre préférence
 
 def saisir_nom_utilisateur():
     nom = ""
@@ -53,13 +55,13 @@ def saisir_nom_utilisateur():
         text_rect_titre = text_titre.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 250))
         fenetre.blit(text_titre, text_rect_titre)
 
-        # Affichage du champ de saisie
+        # Affichage du champ de saisie avec le bouton
         text = font_grande.render("Entrez votre nom:", True, couleur_texte)
         text_rect = text.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 50))
         fenetre.blit(text, text_rect)
 
-        pygame.draw.rect(fenetre, couleur_fond_rectangle, input_rect)
-        pygame.draw.rect(fenetre, couleur_texte, input_rect, 2)
+        pygame.draw.rect(fenetre, couleur_fond_rectangle, input_rect, border_radius=border_radius)
+        pygame.draw.rect(fenetre, couleur_texte, input_rect, 2, border_radius=border_radius)
         text_nom = font_grande.render(nom, True, couleur_texte)
         text_rect_nom = text_nom.get_rect(center=input_rect.center)
         fenetre.blit(text_nom, text_rect_nom)
@@ -206,6 +208,7 @@ fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (largeur_fenetre, hauteu
 rect_jouer = pygame.Rect((largeur_fenetre // 2 - 100, 120, 200, 50))
 rect_inserer = pygame.Rect((largeur_fenetre // 2 - 150, 180, 300, 50))
 input_rect = pygame.Rect((largeur_fenetre // 2 - 150, 240, 300, 50))
+rect_scores = pygame.Rect((largeur_fenetre // 2 - 150, 500, 300, 60))
 couleur_fond_bouton = (80, 80, 80)
 border_radius = 10
 
@@ -232,6 +235,12 @@ while True:
     text_rect_inserer = text_inserer.get_rect(center=rect_inserer.center)
     fenetre.blit(text_inserer, text_rect_inserer)
 
+    pygame.draw.rect(fenetre, couleur_fond_bouton, rect_scores, border_radius=border_radius)
+    pygame.draw.rect(fenetre, couleur_texte, rect_scores, 2, border_radius=border_radius)
+    text_scores = font_grande.render("Tableau Des Scores", True, couleur_texte)
+    text_rect_scores = text_scores.get_rect(center=rect_scores.center)
+    fenetre.blit(text_scores, text_rect_scores)
+
     if insert_mode:
         pygame.draw.rect(fenetre, couleur_fond_bouton, input_rect, border_radius=border_radius)
         pygame.draw.rect(fenetre, couleur_texte, input_rect, 2, border_radius=border_radius)
@@ -255,6 +264,8 @@ while True:
                 jouer_pendu()
             elif rect_inserer.collidepoint(event.pos):
                 insert_mode = True
+            elif rect_scores.collidepoint(event.pos):
+                afficher_tableau_scores()
             elif insert_mode and input_rect.collidepoint(event.pos):
                 insert_mode = False
                 nouveau_mot = ""
@@ -269,3 +280,42 @@ while True:
                 nouveau_mot = nouveau_mot[:-1]
             else:
                 nouveau_mot += event.unicode
+
+    def afficher_tableau_scores():
+        fond_ecran_scores = pygame.image.load("images/image-scores.jpg")
+        fond_ecran_scores = pygame.transform.scale(fond_ecran_scores, (largeur_fenetre, hauteur_fenetre))
+
+        fenetre.blit(fond_ecran_scores, (0, 0))
+        pygame.display.set_caption("Tableau Des Scores")
+
+        with open("fichiers texte/scores.txt", "r") as fichier_scores:
+            scores = fichier_scores.readlines()
+
+        y_position = 100
+        font_petite = pygame.font.Font("polices/Courier New.ttf", 10)
+
+        for score in scores:
+            text_score = font_petite.render(score.strip(), True, couleur_text_pendu)
+            text_rect_score = text_score.get_rect(center=(largeur_fenetre // 2, y_position))
+            fenetre.blit(text_score, text_rect_score)
+            y_position += 30
+
+        font_petite = pygame.font.Font("polices/Courier New.ttf", 10)
+
+        text_retour = font_petite.render("Cliquez n'importe où sur la page pour revenir au Menu Principal", True, couleur_text_pendu)
+        text_rect_retour = text_retour.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre - 100))
+        fenetre.blit(text_retour, text_rect_retour)
+
+        pygame.display.flip()
+
+        attendre_clic()
+
+    def attendre_clic():
+        attente = True
+        while attente:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    attente = False
