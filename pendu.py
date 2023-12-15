@@ -23,6 +23,9 @@ with open("scores.txt", "a"):
 
 score_joueur = 0
 
+font_menu_principal = pygame.font.Font("police/design.graffiti.comicsansmsgras.ttf", 36)
+font_petite = pygame.font.Font(None, 24)
+
 def saisir_nom_utilisateur():
     nom = ""
     saisie_active = True
@@ -45,8 +48,8 @@ def saisir_nom_utilisateur():
         fenetre.fill(couleur_fond)
         fenetre.blit(fond_ecran_menu, (0, 0))
 
-        # Affichage du titre
-        text_titre = font_grande.render(titre, True, couleur_text_pendu)
+        # Affichage du titre avec la nouvelle police
+        text_titre = font_menu_principal.render(titre, True, couleur_text_pendu)
         text_rect_titre = text_titre.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 250))
         fenetre.blit(text_titre, text_rect_titre)
 
@@ -213,9 +216,9 @@ nouveau_mot = ""
 while True:
     fenetre.blit(fond_ecran_menu, (0, 0))
 
-    text = font_grande.render("Menu Principal", True, (50, 50, 50))
-    text_rect = text.get_rect(center=(largeur_fenetre // 2, 50))
-    fenetre.blit(text, text_rect)
+    text_menu_principal = font_menu_principal.render("Menu Principal", True, (50, 50, 50))
+    text_rect_menu_principal = text_menu_principal.get_rect(center=(largeur_fenetre // 2, 50))
+    fenetre.blit(text_menu_principal, text_rect_menu_principal)
 
     pygame.draw.rect(fenetre, couleur_fond_bouton, rect_jouer, border_radius=border_radius)
     pygame.draw.rect(fenetre, couleur_texte, rect_jouer, 2, border_radius=border_radius)
